@@ -1,0 +1,17 @@
+@API_URL = https://momento-api-sandbox.caloria.online/api
+@API_TOKEN = 855e047577eb15ee8da98f6246ec48fac39827b57b1fe0adcd00510a9a0922d2c0cefb33e329a71e83112eb80db376b88f8c189d265e126f9c9f80e1aabef59405f6d880e339a99f8479cd5e6c2782a1e351d96eca342495ca5beb77f9d102b915c76da2ff2077d6597efb9bb8a6c154f6c02650c62372d0dcf506cb896c35ac
+
+
+### Obtener géneros
+GET {{API_URL}}/user-genders
+Authorization: Bearer {{API_TOKEN}}
+
+### Obtener marcas
+GET {{API_URL}}/vehicle-brands?sort=code&pagination[pageSize]=60&pagination[page]=1
+Authorization: Bearer {{API_TOKEN}}
+
+### Obtener años por modelo
+@MODEL_CODE = sentra
+
+GET {{API_URL}}/vehicle-versions/years/distinct?filters[vehicle_model][code][$eq]={{MODEL_CODE}}
+Authorization: Bearer {{API_TOKEN}}

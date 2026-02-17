@@ -1,0 +1,83 @@
+@API_URL = https://momento-api-sandbox.caloria.online/api
+@API_TOKEN = 
+###
+# Servicio para obtener los generos disponibles para cotizar
+GET {{API_URL}}/user-genders HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{API_TOKEN}}
+
+###
+# Servicio para obtener todas las marcas
+@BRAND_PAGE_SIZE=60
+@BRAND_PAGE=1
+GET {{API_URL}}/vehicle-brands
+    ?sort=code
+    &pagination[pageSize]={{BRAND_PAGE_SIZE}}
+    &pagination[page]={{BRAND_PAGE}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{API_TOKEN}}
+
+###
+# Servicio para obtener los tipos de vehiculos
+GET {{API_URL}}/vehicle-types HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{API_TOKEN}}
+
+###
+# Servicio para obtener todos los modelos
+GET {{API_URL}}/vehicle-models HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{API_TOKEN}}
+
+###
+# Servicio para obtener los modelos de una marca
+@BRAND_CODE = suzuki
+@VEHICLE_TYPE_CODE = car
+GET {{API_URL}}/vehicle-models
+    ?filters[vehicle_brand][code][$eq]={{BRAND_CODE}}
+    &filters[vehicle_type][code][$eq]={{VEHICLE_TYPE_CODE}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{API_TOKEN}}
+
+###
+# Servicio para obtener todas las versiones de vehiculos
+GET {{API_URL}}/vehicle-versions
+    ?populate[vehicle_model][populate][0]=vehicle_type HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{API_TOKEN}}
+
+###
+# Servicio para obtener el catálogo de años por version
+@MODEL_CODE = sentra
+GET {{API_URL}}/vehicle-versions/years/distinct
+    ?filters[vehicle_model][code][$eq]={{MODEL_CODE}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{API_TOKEN}}
+###
+# Servicio para obtener las versiones de una marca
+@MODEL_YEAR = 2017
+GET {{API_URL}}/vehicle-versions
+    ?filters[vehicle_model][code][$eq]={{MODEL_CODE}}
+    &filters[year][$eq]={{MODEL_YEAR}} HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{API_TOKEN}}
+
+###
+# Servicio para generar una cotización
+POST {{API_URL}}/quote HTTP/1.1
+Content-Type: application/json
+Authorization: Bearer {{API_TOKEN}}
+
+{
+    "user":
+        {
+            "firstName":"Rene",
+            "paternalLastName":"Gado",
+            "maternalLastName":"de la Cruz",
+            "postalCode":"02100",
+            "email":"rene-gado@correo.com",
+            "userGenderCode":"MALE",
+            "birthday":"1990-05-05"
+        },
+    "vehicleVersionCode":"0620182017e337d54"
+}
